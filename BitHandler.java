@@ -12,6 +12,8 @@ public class BitHandler extends Thread {
 	private BitListener listener;
 	private String state = SILENCE;
 
+	private String broadcasted = "";
+
 	public BitHandler() {
 		this("localhost", LightSystem.DEFAULT_PORT);
 	}
@@ -35,14 +37,35 @@ public class BitHandler extends Thread {
 	 * Turn the light system on (if it isn't already), then wait half a period. Then
 	 * turn the light off, for half a period.
 	 */
-	public void broadcastZero() {
+	public void broadcastZero() throws CollisionException {
+
+		panel.switchOn();
+		pause(500);
+		if(!panel.isOn()){
+			throw new CollisionException();
+		}
+		panel.switchOff();
+		pause(500);
+		if(panel.isOn()){
+			throw new CollisionException();
+		}
 	}
 
 	/**
 	 * Turn the light system off (if it isn't already), then wait half a period.
 	 * Then turn the light on, for half a period.
 	 */
-	public void broadcastOne() {
+	public void broadcastOne() throws CollisionException {
+		panel.switchOff();
+		pause(500);
+		if(panel.isOn()){
+			throw new CollisionException();
+		}
+		panel.switchOn();
+		pause(500);
+		if(!panel.isOn()){
+			throw new CollisionException();
+		}
 	}
 
 	/**
@@ -50,11 +73,26 @@ public class BitHandler extends Thread {
 	 * Build up a string of successfully sent bits (called "broadcasted"). Switch
 	 * the light off when done.
 	 */
-	public void broadcast(String bits) {
+	public void broadcast(String bits) throws CollisionException {
+
+		broadcasted = "";
+
+		for(int i = 0; i < bits.length(); i++){
+			char s = bits.charAt(i);
+
+			if(s == '1'){
+				broadcastOne();
+			}else if(s =='0'){
+				broadcastZero();
+			}
+
+			broadcasted += s;
+		}
 	}
 
 	public String toString() {
-		return "hello";
+		String s = panel.toString();
+		return s;
 	}
 
 	/**
@@ -83,7 +121,7 @@ public class BitHandler extends Thread {
 						state = SILENCE;
 					} else if (state.equals(EXPECT_ONE)) {
 						state = EXPECT_ZERO;
-						// notifyReceived(bits);
+						notifyReceived(bits);
 						bits = "";
 					} else if (state.equals(HALF_ZERO)) {
 						bits += "0";
@@ -126,11 +164,11 @@ public class BitHandler extends Thread {
 
 				if (state.equals(EXPECT_ONE)) {
 					state = SILENCE;
-					// notifyReceived(bits);
+					notifyReceived(bits);
 					bits = "";
 				} else if (state.equals(HALF_ZERO)) {
 					state = SILENCE;
-					// notifyReceived(bits + "0");
+					notifyReceived(bits + "0");
 					bits = "";
 				} else if (state.equals(HALF_ONE)) {
 					bits = "";
