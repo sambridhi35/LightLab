@@ -1,5 +1,5 @@
 public class BitHandler extends Thread {
-	public static final int HALFPERIOD = 150;
+	public static final int HALFPERIOD = 500;
 
 	private static final String SILENCE = "SILENCE";
 	private static final String EXPECT_ZERO = "EXPECT_ZERO";
@@ -40,12 +40,12 @@ public class BitHandler extends Thread {
 	public void broadcastZero() throws CollisionException {
 
 		panel.switchOn();
-		pause(500);
+		pause(HALFPERIOD);
 		if(!panel.isOn()){
 			throw new CollisionException();
 		}
 		panel.switchOff();
-		pause(500);
+		pause(HALFPERIOD);
 		if(panel.isOn()){
 			throw new CollisionException();
 		}
@@ -57,15 +57,16 @@ public class BitHandler extends Thread {
 	 */
 	public void broadcastOne() throws CollisionException {
 		panel.switchOff();
-		pause(500);
+		pause(HALFPERIOD);
 		if(panel.isOn()){
 			throw new CollisionException();
 		}
 		panel.switchOn();
-		pause(500);
+		pause(HALFPERIOD);
 		if(!panel.isOn()){
 			throw new CollisionException();
 		}
+		panel.switchOff();
 	}
 
 	/**

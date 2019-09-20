@@ -21,9 +21,6 @@ public class Test {
 
 		BitHandler b1 = new BitHandler();
 		BitDisplay bd1 = new BitDisplay(b1);
-
-		BitHandler b2 = new BitHandler();
-		BitDisplay bd2 = new BitDisplay(b2);
 }
 	
 }
