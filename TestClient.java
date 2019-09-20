@@ -21,7 +21,7 @@ public class TestClient {
 
 		LightDisplay d1 = new LightDisplay(new LightPanel(ip, port));
 
-		BitHandler b1 = new BitHandler();
+		BitHandler b1 = new BitHandler(ip, port);
 		BitDisplay bd1 = new BitDisplay(b1);
 }
 	
