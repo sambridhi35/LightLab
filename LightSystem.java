@@ -8,7 +8,7 @@ import java.util.*;
 */
 public class LightSystem extends Thread {
 	/*
-	*Default port opens a arbitrary port in the local network. HIGH and LOW are representations of voltage messages. 
+	*	Default port opens a arbitrary port in the local network. HIGH and LOW are representations of voltage messages. 
 	*/
 	public static final int DEFAULT_PORT = 9223;
 	public static final String HIGH = "H";
@@ -51,24 +51,24 @@ public class LightSystem extends Thread {
 			ServerSocket serverSocket = new ServerSocket(port);
 			while (true) {
 
-				/*
+				/**
 				* This opens a socket for the client to connect to the server socket. The server accepts the connection and prints a message. 
 				*/
 				Socket clientSocket = serverSocket.accept();
 
 				System.out.println(clientSocket + " connected");
 
-				/*
-				*clientOut is created to gather data for the client's output. 
+				/**
+				* ClientOut is created to gather data for the client's output. 
 				*/
 				PrintWriter clientOut = new PrintWriter(clientSocket.getOutputStream(), true);
 				clients.add(clientOut);
 				/*
-				*BufferReader is created to interpret the data sent through the client outputstream. 
+				* BufferReader is created to interpret the data sent through the client outputstream. 
 				*/
 				BufferedReader clientSocketIn = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-				/*
-				*Creates a new thread for the client in order to handle each client concurrently. 
+				/**
+				* Creates a new thread for the client in order to handle each client concurrently. 
 				*/
 				LightSystemThread thread = new LightSystemThread(this, clientSocketIn);
 				thread.start();
@@ -82,7 +82,7 @@ public class LightSystem extends Thread {
 	}
 
 	/**
-	This function checks for a high voltage and if it is not isHigh is true and the clients gets notification. 
+	* Is the voltage high? no? switch the light on and tell the other lights.
 	*/
 	public void switchOn() {
 		if (!isHigh) {
@@ -91,7 +91,7 @@ public class LightSystem extends Thread {
 		}
 	}
 	/**
-	This function checks for a high voltage and if it is isHigh is true and the clients gets notification. 
+	* Is the voltage high? yes? switch the light off.
 	*/
 	public void switchOff() {
 		if (isHigh) {
@@ -100,7 +100,9 @@ public class LightSystem extends Thread {
 		}
 	}
 
-	
+	/**
+	 * works through the list of clients, notifying them of a voltage change
+	 */
 	private void notifyClients() {
 		Iterator it = clients.iterator();
 		while (it.hasNext()) {
@@ -109,6 +111,10 @@ public class LightSystem extends Thread {
 		}
 	}
 
+	/**
+	 * The actual messaage sent to a client
+	 * @param clientOut id of recieving client
+	 */
 	private void notifyClient(PrintWriter clientOut) {
 		if (isHigh)
 			clientOut.println(HIGH);

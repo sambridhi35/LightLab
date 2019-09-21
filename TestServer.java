@@ -1,4 +1,4 @@
-/*
+/**
  * @author      Sambridhi Acharya and Andrew Quist 
  * @version     1.0                 
  */
@@ -8,12 +8,9 @@ import java.net.*;
 import java.util.*;
 
 /*
-Class to implement the lightDisplay class system and test its functions. 
+* Recieves any incoming client with the default port.
 */
 public class TestServer {
-	/*
-	runs the terminal program.
-	*/
 	public static void main(String[] args) {
 		LightSystem system = new LightSystem();
 		LightDisplay d2 = new LightDisplay(new LightPanel());

@@ -2,7 +2,8 @@ import java.awt.event.*;
 import javax.swing.*;
 
 /**
- * The LightDisplay program inspects LightPanel classes, displaying whether or not the light is on. It also creates gui for a user to switch these lights.
+ * The LightDisplay program inspects LightPanel classes, displaying whether or not the
+ * light is on. It also creates gui for a user to switch these lights.
  * @author      Andrew Quist and Sam Acharya
 */
 public class LightDisplay extends Thread implements ActionListener {

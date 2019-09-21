@@ -2,9 +2,10 @@ import java.io.*;
 import java.net.*;
 import java.util.*;
 
-/*
-	class that implements the LightPanel class systems and its functions 
-*/
+/**
+ * LightPanel is a network interface designed to simulate a wired connection.
+ * any light panel can connect to a light system on the same computer (or to an ip on the local network)
+ */
 public class LightPanel extends Thread {
 	private static Set idsUsed = new HashSet();
 
@@ -19,8 +20,9 @@ public class LightPanel extends Thread {
 	}
 	
 	/**
- 	 this function is assigning the voltage value and turning it on or off when necessary on the shared wire. 
-  	 @param string host; integer port
+ 	 * A constructor that connects to an outside light system. The empty constructor connects to the computer's ip and a default port number.
+	 * @param string host - the ip of the computer it must connect to
+	 * @param integer port - port number of the connecting light system
 	*/
 	public LightPanel(String host, int port) {
 		
@@ -28,7 +30,7 @@ public class LightPanel extends Thread {
 			id = LightSystem.getRandom().nextInt(15) + 1;
 		} while (!idsUsed.add(Integer.valueOf(id)));
 		/*
-		It takes the input from the host and the port and depending on the input given the output. If the host is invalid throws an error. 
+		Take the input from the host and the port and depending on the input given the output. If the host is invalid throws an error. 
 		*/
 		try {
 			socket = new Socket(host, port);
@@ -92,24 +94,24 @@ public class LightPanel extends Thread {
 			throw new RuntimeException(e);
 		}
 	}
-	/*
-	if the light is on it returns that the voltage of the light is high
-	@return    boolean the voltage is high
+	/**
+	* if the light is on it returns that the voltage of the light is high
+	* @return    boolean the voltage is high
 	*/
 	public boolean isOn() {
 		return isHigh;
 	}
 
 	/**
-	@return    string the value of id as a string    
+	* @return	string the value of id as a string    
 	*/
 	public String toString() {
 		return "#" + id;
 	}
 
 	/**
-	this function returns the id of the LightSystem i.e the value that is chosen randomly
-	@return   integer id of the LightSystem
+	* this function returns the id of the LightSystem i.e the value that is chosen randomly
+	* @return   integer id of the LightSystem
 	*/
 	public int getID() {
 		return id;
